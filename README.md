@@ -20,5 +20,11 @@ make debug
 make test
 ```
 
+## To Do
+[ ] - implement r
+[ ] - implement d
+[ ] - holds 24
+
+
 LINK
 https://repl.it/@bathuniversity/sprn-to-emulate#main.sh

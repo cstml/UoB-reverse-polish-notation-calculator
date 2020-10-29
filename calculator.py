@@ -7,26 +7,48 @@ class Calculator:
         self.stack=[]
 
     def interface(self):
-        val = input()
-        while val != '.exit': #baked in exit mechanism for interface [REMOVE]
+        val = input()           # read the input
+        while val != '.exit':   # baked in exit mechanism for interface [REMOVE]
             self.read (val)
             val = input()
+            print(self.stack)
 
-    def read(self, val):
-        val = self.parse(val)
-        if val != None:
-            self.stack.append(val)
+    def read(self, rawInput):
+        # read the input
+        # if the input is a list split it
+
+        if not rawInput.isnumeric():
+            prcInput = rawInput.split()         # split the input 
         else:
-            self.display_error(1)
+            prcInput = rawInput
+
+        if isinstance(prcInput, list):
+            for val in prcInput:
+                val = self.parse(val)
+        else:
+            self.parse(prcInput)
         return self.stack
 
 
     def parse(self,val):
-        parse = re.compile('([0-9]+)')
-        val = parse.match(val)
-        if val != None:
-            return val.group()
-        return
+
+        numberEx = re.compile('[0-9]+')
+        signEx = re.compile('[+-/*%]+')
+
+        print (val)
+        numVal = numberEx.match(val)
+        print (numVal)
+        signVal = signEx.match(val)
+
+        if numVal != None:
+            self.stack.append(numVal.group())
+            return
+        elif signVal!= None:
+            self.stack.append(signVal.group())
+            return
+        else:
+            self.display_error(1)
+            return
 
     def display_error(self,error_code):
         if error_code == 1 :
