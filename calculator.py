@@ -11,7 +11,6 @@ class Calculator:
         while val != '.exit':   # baked in exit mechanism for interface [REMOVE]
             self.read (val)
             val = input()
-            print(self.stack)
 
     def read(self, rawInput):
         # read the input
@@ -33,32 +32,77 @@ class Calculator:
     def parse(self,val):
 
         numberEx = re.compile('[0-9]+')
-        signEx = re.compile('[+-/*%]+')
+        signEx = re.compile('[=+-/*%]+')
+        leterEx = re.compile('d')
 
-        print (val)
         numVal = numberEx.match(val)
-        print (numVal)
         signVal = signEx.match(val)
-
+        leterVal = leterEx.match(val)
+        
         if numVal != None:
-            self.stack.append(numVal.group())
+            val=numVal.group()
+            self.stack.append(int(val))
             return
+
         elif signVal!= None:
-            self.stack.append(signVal.group())
-            return
+            for sign in signVal.group():
+                print(sign)
+                if self.check_Size() == True:
+                    if sign == "+":
+                        self.add()
+                    elif sign == "-":
+                        self.subtract()
+                    elif sign == "*":
+                        self.multiply()
+                    elif sign == "/":
+                        self.divide()
+
+                elif sign == "=":
+                    self.print_Last()
+
+                else:
+                    self.display_error(2)
+
+        elif leterVal!= None:
+            for leter in leterVal.group():
+                if leter == "d":
+                    for num in self.stack:
+                        print(num)
+
         else:
             self.display_error(1)
             return
+
+    def print_Last(self):
+        print(self.stack[-1])
 
     def display_error(self,error_code):
         if error_code == 1 :
             print ("Wrong input error text")
 
-    def add(a,b):
-        return a+b
+        if error_code == 2 :
+            print ("Stack underflow")
+    
+    def check_Size(self):
+        if len(self.stack)>1:
+            return True
+        else:
+            return False
+        
+    def add(self):
+        if self.check_Size():
+            self.stack[-2] = self.stack[-1] + self.stack[-2]
+            self.stack.pop(-1);
+            print (self.stack)
 
-    def subtract(a,b):
+    def subtract(self,a,b):
         return a-b
 
-    def multiply(a,b):
+    def multiply(self,a,b):
         return a*b
+
+    def divide(self,a,b):
+        return a/b
+
+    def modulo(self,a,b):
+        return a%b

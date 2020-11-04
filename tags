@@ -1,0 +1,25 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+Calculator	./calculator.py	/^class Calculator:$/;"	c
+Calculator	./main.py	/^from calculator import Calculator$/;"	i
+Calculator	./test.py	/^from calculator import Calculator$/;"	i
+Regex	./calculator.py	/^import re # Regex parser$/;"	i
+TestStringMethods	./test.py	/^class TestStringMethods(unittest.TestCase):$/;"	c
+__init__	./calculator.py	/^    def __init__(self):$/;"	m	class:Calculator
+add	./calculator.py	/^    def add(a,b):$/;"	m	class:Calculator
+calculator	./main.py	/^    calculator = Calculator()$/;"	v
+display_error	./calculator.py	/^    def display_error(self,error_code):$/;"	m	class:Calculator
+interface	./calculator.py	/^    def interface(self):$/;"	m	class:Calculator
+multiply	./calculator.py	/^    def multiply(a,b):$/;"	m	class:Calculator
+parse	./calculator.py	/^    def parse(self,val):$/;"	m	class:Calculator
+parser	./calculator.py	/^import re # Regex parser$/;"	i
+re	./calculator.py	/^import re # Regex parser$/;"	i
+read	./calculator.py	/^    def read(self, rawInput):$/;"	m	class:Calculator
+subtract	./calculator.py	/^    def subtract(a,b):$/;"	m	class:Calculator
+test_read_correctly_numbers	./test.py	/^    def test_read_correctly_numbers(self):$/;"	m	class:TestStringMethods
+test_read_correctly_signs	./test.py	/^    def test_read_correctly_signs(self):$/;"	m	class:TestStringMethods
+unittest	./test.py	/^import unittest$/;"	i

@@ -24,6 +24,7 @@ make test
 [ ] - implement r
 [ ] - implement d
 [ ] - holds 24
+[ ] - implement random
 
 
 LINK
