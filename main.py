@@ -1,6 +1,4 @@
-from calculator import Calculator
+from srpn_controller import SRPN_Controller
 
 if __name__=="__main__":
-    calculator = Calculator()
-    calculator.interface()
-        
+    calculator = SRPN_Controller()
