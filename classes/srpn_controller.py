@@ -7,6 +7,7 @@
 from classes.srpn_view  import SRPN_View
 from classes.srpn_model import SRPN_Model
 from classes.result     import Result
+from classes.result     import Result_Type as RT
 
 class SRPN_Controller:
     """
@@ -42,18 +43,18 @@ class SRPN_Controller:
 
         for result in result_list:
 
-            if result.code == 0:    # single number
-                print(self.view.disp_top(result.data))
+            if result.code == RT.DT:    # single number
+                print(self.view.disp_top(result))
                 return 0
 
-            elif result.code == 1:  # list
-                print(self.view.disp_stack(result.data))
+            elif result.code == RT.DS:  # list
+                print(self.view.disp_stack(result))
                 return 0
 
-            elif result.code == 2:  # insertion
+            elif result.code == RT.IN:  # insertion
                 return 0
 
-            elif result.code == 3:  # error
+            elif result.code == RT.ER:  # error
                 print(self.view.disp_error(result))
                 return 0
 

@@ -25,18 +25,18 @@ class SRPN_View:
         return (welcome_message)
 
 
-    def disp_top(self, top):
+    def disp_top(self, result):
         """
         Get the last element if there is one
         If the stack is under display the error code
         """
-        return top
+        return result.data
 
-    def disp_stack(self,stack):
+    def disp_stack(self, result):
         """
         Create a String of the numbers to be displayed
         """
         out_string = ""
-        for number in stack:
-            out_string += number.to_string() + " "
+        for number in result.data:
+            out_string += str(number) + " "
         return out_string

@@ -1,6 +1,16 @@
 #!/usr/bin/env python3
+from enum import Enum
+
+class Result_Type(Enum):
+    DF = -1 # Default Value
+    DT = 0  # Display Top
+    DS = 1  # Display Stack
+    IN = 2  # Insertion Succesfull
+    ER = 3
+    OP = 5
+
 class Result:
-    code = -1
+    code = Result_Type.DF
     data = -1
 
     def __init__ (self, code, data):
@@ -16,3 +26,4 @@ class Result:
         repr_string = "Result(code: {}, data: {})".format(\
                 self.code,self.data)
         return repr_string
+

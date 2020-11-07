@@ -88,6 +88,10 @@ class SRPN_Model:
         data =  rw_data.split()
         return data
 
+    def action(self, action):
+        actions = { "d" : Result(1,self.stack),\
+                    "=" : Result(0,self.stack[-1])}
+        return actions[action]
 
     def init_result_list(self):
         """
@@ -154,6 +158,7 @@ class SRPN_Model:
 
                 elif self.is_action(element): # check if it is an action
                     print("is action")
+                    self.prepare_response(self.action(element))
 
                 else:
                     self.prepare_response(\
