@@ -45,19 +45,16 @@ class SRPN_Controller:
 
             if result.code == RT.DT:    # single number
                 print(self.view.disp_top(result))
-                return 0
 
             elif result.code == RT.DS:  # list
                 print(self.view.disp_stack(result))
-                return 0
 
             elif result.code == RT.IN:  # insertion
-                return 0
+                dummy = " do nothing"
 
             elif result.code == RT.ER:  # error
                 print(self.view.disp_error(result))
-                return 0
 
-            elif result.code == 5:  # opperation
-                return 0
+            elif result.code == RT.OP:  # opperation
+                dummy = " do nothing"
 

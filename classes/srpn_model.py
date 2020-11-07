@@ -2,6 +2,7 @@
 
 import re
 from classes.result import Result
+from classes.result import Result_Type as RT
 
 class Error:
     e_type = ""
@@ -75,11 +76,10 @@ class SRPN_Model:
             self.stack[-2] = self.saturate(op_dict[op](\
                                                 self.stack[-1],\
                                                 self.stack[-2]))
-            pop_el = self.stack[-1]
             self.stack.pop(-1)
-            return Result(5,pop_el)
+            return Result(RT.OP, self.stack[-1])
         else:
-            return Result(3,Error(2))
+            return Result(RT.ER, Error(2))
 
     def process(self, rw_data):
         """
@@ -89,8 +89,8 @@ class SRPN_Model:
         return data
 
     def action(self, action):
-        actions = { "d" : Result(1,self.stack),\
-                    "=" : Result(0,self.stack[-1])}
+        actions = { "d" : Result(RT.DS, self.stack),\
+                    "=" : Result(RT.DT, self.stack[-1])}
         return actions[action]
 
     def init_result_list(self):
@@ -162,8 +162,7 @@ class SRPN_Model:
 
                 else:
                     self.prepare_response(\
-                            Result(\
-                                3, Error(3,element)))
+                            Result(RT.ER, Error(3,element)))
 
         except Exception as e:
             print(e)
@@ -193,10 +192,10 @@ class SRPN_Model:
         if self.stack_ok("Insert"):
             data = self.saturate(data)
             self.stack.append(data)
-            return Result(2,data)
+            return Result(RT.IN,data)
 
         else: # stack overflow
-            return Result(3,1)
+            return Result(RT.ER,Error(1))
         
 
     
