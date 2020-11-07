@@ -1,6 +1,6 @@
 # Main VIEW
 
-import Result from result
+from classes.result import Result 
 
 class SRPN_View:
 
@@ -8,18 +8,17 @@ class SRPN_View:
         """
         A tidy way to handle errors 
         """
-        if result.code == 0:
+        if result.data.e_type == 0:
             return("Stack empty.")
 
-        elif result.code == 1:
+        elif result.data.e_type == 1:
             return("Stack overflow.")
 
-        elif result.code == 2:
+        elif result.data.e_type == 2:
             return("Stack underflow.")
     
-        elif result.code == 3:
-            return('Unrecognised operator or operand "{}".'.format(\
-                    result.data))
+        elif result.data.e_type == 3:
+            return('Unrecognised operator or operand "{}".'.format(reslt.data.e_message))
 
     def disp_wlcm(self):
         welcome_message = "You can now start interacting with the SRPN calculator"

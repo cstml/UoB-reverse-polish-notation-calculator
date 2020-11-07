@@ -1,8 +1,15 @@
 # SRPN Model Class
 
 import re
+from classes.result import Result
 
-from result import Result
+class Error:
+    e_type = ""
+    e_message = ""
+
+    def __init__ (sef,t,m=0):
+        self.e_type = t
+        self.e_message = m
 
 class SRPN_Model:
     
@@ -49,25 +56,34 @@ class SRPN_Model:
                 return True
             else:
                 return False
-        if op == 'Add' :
+
+        if op == 'Operation' :
             if len(self.stack) <= 1 :
                 return False
             else :
                 return True
 
-    def addition(self):
-        if self.stack_ok("Add"):
-            self.stack[-2]+=self.stack[-1]
-            self.stack[-2] = self.saturate(self.stack[-2])
+    def operation(self,op):
+        op_dict = { "+" : (lambda x, y : x + y),\
+                    "-" : (lambda x, y : x - y),\
+                    "/" : (lambda x, y : x / y),\
+                    "%" : (lambda x, y : x % y),\
+                    "*" : (lambda x, y : x * y),\
+                    "^" : (lambda x, y : pow(x,y))}
+
+        if self.stack_ok("Operation"):
+            self.stack[-2] = self.saturate(op_dict[op](\
+                                                self.stack[-1],\
+                                                self.stack[-2]))
             pop_el = self.stack[-1]
             self.stack.pop(-1)
             return Result(5,pop_el)
         else:
-            return Result(3,2)
+            return Result(3,Error(2))
 
     def process(self, rw_data):
         """
-        Process the data and split it 
+        Split the string into substrings
         """
         data =  rw_data.split()
         return data
@@ -80,14 +96,41 @@ class SRPN_Model:
         self.result_list = []       # initialise the list of results 
         return 0
 
-
     def prepare_response(self, result):
         """
         Appends each result to the list
         """
         self.result_list.append(result)
         return 0
-        
+
+    def reg_match(self,data,expr):
+        number_rx = re.compile(expr)
+        if number_rx.match(data) != None:
+            return True
+        else:
+            return False
+
+    def is_number(self, data):
+        """
+        returns True if element is a number
+        and false if it is anything else
+        """
+        expr = '[-]?[0-9]+'
+        return self.reg_match(data,expr)
+
+    def is_op(self,data):
+        """
+        returns True if element is an opperation
+        """
+        expr = '[-+/%^*]'
+        return self.reg_match(data,expr)
+
+    def is_action(self,data):
+        """
+        verifies if element is action
+        """
+        expr = '[d=]'
+        return self.reg_match(data,expr)
 
     def take_in(self, rw_data):
         """
@@ -101,26 +144,27 @@ class SRPN_Model:
         print(processed_data)
         try:
             for element in processed_data:
-                if element.isnumeric():
-                    if self.stack_ok('Insert'):
-                        element = int(element)
-                        result = self.insert_data(element)
-                        self.prepare_response(result)
-
-                    else: # stack overflow
-                        result = Result(3,1)
-                        self.prepare_response(result)
-
-                elif data == "+":
-                    result = self.addition()
+                if self.is_number(element): # check if it is a number
+                    element = int(element)
+                    result = self.insert_data(element)
                     self.prepare_response(result)
+
+                elif self.is_op(element):   # check if it is an operation
+                    self.prepare_response(self.operation(element))
+
+                elif self.is_action(element): # check if it is an action
+                    print("is action")
+
+                else:
+                    self.prepare_response(\
+                            Result(\
+                                3, Error(3,element)))
 
         except Exception as e:
             print(e)
 
         finally:
             return self.result_list
-
 
     def saturate(self, number):
         """
@@ -134,7 +178,6 @@ class SRPN_Model:
             return self.MAX_DN
         else:
             return number
-       
 
     def insert_data(self, data):
         """
@@ -142,12 +185,13 @@ class SRPN_Model:
         returns a Result containing 
         the last number inserted and code 2
         """
+        if self.stack_ok("Insert"):
+            data = self.saturate(data)
+            self.stack.append(data)
+            return Result(2,data)
 
-        data = self.saturate(data)
-        self.stack.append(data)
-        result = Result(2,data)
-        return result
-
+        else: # stack overflow
+            return Result(3,1)
         
 
     

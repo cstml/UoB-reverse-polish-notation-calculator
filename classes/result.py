@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 class Result:
     code = -1
     data = -1

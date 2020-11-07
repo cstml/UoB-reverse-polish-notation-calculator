@@ -1,12 +1,12 @@
+#!/usr/bin/env python3
 # SRPN Controller
-# Author: Vlad P. Luchian
 #
 # Comment: I decided to go down the path of an MVC to be better abbl to test
 # the code 
 
-from srpn_view  import SRPN_View
-from srpn_model import SRPN_Model
-from result     import Result
+from classes.srpn_view  import SRPN_View
+from classes.srpn_model import SRPN_Model
+from classes.result     import Result
 
 class SRPN_Controller:
     """
