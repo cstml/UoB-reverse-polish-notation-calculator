@@ -14,6 +14,7 @@ class SRPN_Model:
     MAX_DN = -2147483648
     
     stack = []
+    result_list = []
     
     random_stack = [1804289383,\
                     846930886,\
@@ -64,21 +65,61 @@ class SRPN_Model:
         else:
             return Result(3,2)
 
+    def process(self, rw_data):
+        """
+        Process the data and split it 
+        """
+        data =  rw_data.split()
+        return data
 
-    def take_in(self, data):
-        if data.isnumeric():
-            if self.stack_ok('Insert'):
-                data = int(data)
-                result = self.insert_data(data)
-                return result
 
-            else: # stack overflow
-                result = Result(3,1)
-                return result
+    def init_result_list(self):
+        """
+        Initialise the result list
+        """
+        self.result_list = []       # initialise the list of results 
+        return 0
 
-        elif data == "+":
-            return self.addition()
 
+    def prepare_response(self, result):
+        """
+        Appends each result to the list
+        """
+        self.result_list.append(result)
+        return 0
+        
+
+    def take_in(self, rw_data):
+        """
+        takes in the data from the controller
+        sends it to be processed 
+        reads through each element of the processed_data
+        creates the list of results
+        """
+        self.init_result_list()
+        processed_data = self.process(rw_data)
+        print(processed_data)
+        try:
+            for element in processed_data:
+                if element.isnumeric():
+                    if self.stack_ok('Insert'):
+                        element = int(element)
+                        result = self.insert_data(element)
+                        self.prepare_response(result)
+
+                    else: # stack overflow
+                        result = Result(3,1)
+                        self.prepare_response(result)
+
+                elif data == "+":
+                    result = self.addition()
+                    self.prepare_response(result)
+
+        except Exception as e:
+            print(e)
+
+        finally:
+            return self.result_list
 
 
     def saturate(self, number):

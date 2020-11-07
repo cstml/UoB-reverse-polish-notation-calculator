@@ -1,21 +1,25 @@
 # Main VIEW
 
+import Result from result
 
 class SRPN_View:
 
-    def disp_error(self, code):
+    def disp_error(self, result):
         """
         A tidy way to handle errors 
         """
-        if code == 0:
+        if result.code == 0:
             return("Stack empty.")
 
-        elif code == 1:
+        elif result.code == 1:
             return("Stack overflow.")
 
-        elif code == 2:
+        elif result.code == 2:
             return("Stack underflow.")
     
+        elif result.code == 3:
+            return('Unrecognised operator or operand "{}".'.format(\
+                    result.data))
 
     def disp_wlcm(self):
         welcome_message = "You can now start interacting with the SRPN calculator"
