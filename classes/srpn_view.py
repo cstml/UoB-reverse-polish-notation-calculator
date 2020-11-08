@@ -23,6 +23,9 @@ class SRPN_View:
             return('Unrecognised operator or operand "{}".'\
                     .format(result.data.e_message))
 
+        elif result.data.e_type == ER.DIV0:
+            return("Divide by 0.")
+
     def disp_wlcm(self):
         """
         Returns the message the calculator displays at instantiation

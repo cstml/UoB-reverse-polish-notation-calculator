@@ -230,6 +230,60 @@ class Test_Third_Section(unittest.TestCase):
         op = "-"
         self.assertEqual(model.take_in(op), [R(RT.ER, Error(ERROR.ST_UNDRF))])
 
+        op = "="
+        self.assertEqual(model.take_in(op), [R(RT.DT, alist[-1])])
+
+
+class Test_Fourth_Section(unittest.TestCase):
+    def test_4_1(self):
+        """
+        1
+        +
+        """
+        model = SRPN_Model()
+        alist = []
+
+        nr1 = 1
+        r1 = R(RT.IN, nr1)
+        alist.append(nr1)
+        self.assertEqual(model.take_in(str(nr1)), [r1])
+
+        op = "+"
+        self.assertEqual(model.take_in(op), [R(RT.ER, Error(ERROR.ST_UNDRF))])
+
+    def test_4_2(self):
+        """
+        10
+        5
+        -5
+        +
+        /
+        """
+        model = SRPN_Model()
+        alist = []
+
+        nr1 = 10
+        r1 = R(RT.IN, nr1)
+        alist.append(nr1)
+        self.assertEqual(model.take_in(str(nr1)), [r1])
+
+        nr1 = 5
+        r1 = R(RT.IN, nr1)
+        alist.append(nr1)
+        self.assertEqual(model.take_in(str(nr1)), [r1])
+
+        nr1 = -5
+        r1 = R(RT.IN, nr1)
+        alist.append(nr1)
+        self.assertEqual(model.take_in(str(nr1)), [r1])
+
+        op = "+"
+        alist[-2] += alist[-1]
+        alist.pop(-1)
+        self.assertEqual(model.take_in(op), [R(RT.OP, alist[-1])])
+
+        op = "/"
+        self.assertEqual(model.take_in(op), [R(RT.ER, Error(ERROR.DIV0))])
 
 class TestPrintMethods(unittest.TestCase):
 

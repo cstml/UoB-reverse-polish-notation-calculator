@@ -12,6 +12,7 @@ class Error_Type(Enum):
     ST_OVRFL = 1  # Stack Overflow
     ST_UNDRF = 2  # Stack Underflow
     UNRECOGN = 3  # Unrecognised Op 
+    DIV0 = 4  # Division by 0
 
 class Error:
     e_type = Error_Type.DEFAULTV

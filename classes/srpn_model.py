@@ -47,7 +47,7 @@ class SRPN_Model:
         self.random_stack_it=0
         self.stack = []
 
-    def stack_ok(self,op):
+    def stack_ok(self, op):
         """
         Defines operations on the stack that help other methods to take
         decisions
@@ -70,7 +70,16 @@ class SRPN_Model:
             else:
                 return False
 
-    def operation(self,op):
+    def operation_ok(self, op):
+        if op == "/":
+            if self.stack[-1] == 0:
+                return False
+            else:
+                return True
+        else:
+            return True
+
+    def operation(self, op):
         op_dict = { "+" : (lambda x, y : x + y),\
                     "-" : (lambda x, y : x - y),\
                     "/" : (lambda x, y : x // y),\
@@ -79,10 +88,16 @@ class SRPN_Model:
                     "^" : (lambda x, y : pow(x,y))}
 
         if self.stack_ok("Operation"):
-            self.stack[-2] = self.saturate(op_dict[op](\
-                                                self.stack[-2],\
-                                                self.stack[-1]))
-            self.stack.pop(-1)
+            if self.operation_ok(op):
+                self.stack[-2] = self.saturate(op_dict[op](\
+                                                    self.stack[-2],\
+                                                    self.stack[-1]))
+                self.stack.pop(-1)
+
+            elif op == "/":
+                return Result(RT.ER, Error(ERROR.DIV0))
+
+
             return Result(RT.OP, self.stack[-1])
 
         else:
