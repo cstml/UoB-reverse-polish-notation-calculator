@@ -2,6 +2,7 @@ import unittest
 
 try:
     from classes.error import Error
+    from classes.error import Error_Type as ERROR
     from classes.result import Result as R
     from classes.result import Result_Type as RT
     from classes.srpn_model import SRPN_Model
@@ -227,7 +228,7 @@ class Test_Third_Section(unittest.TestCase):
         self.assertEqual(model.take_in(op), [R(RT.DS, alist)])
 
         op = "-"
-        self.assertEqual(model.take_in(op), [R(RT.ER, Error(2,0))])
+        self.assertEqual(model.take_in(op), [R(RT.ER, Error(ERROR.ST_UNDRF))])
 
 
 class TestPrintMethods(unittest.TestCase):

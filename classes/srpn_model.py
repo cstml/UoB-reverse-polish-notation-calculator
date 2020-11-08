@@ -3,6 +3,7 @@
 import re
 from classes.result import Result
 from classes.result import Result_Type as RT
+from classes.error import Error_Type as ERROR
 from classes.error import Error
 
 
@@ -83,8 +84,9 @@ class SRPN_Model:
                                                 self.stack[-1]))
             self.stack.pop(-1)
             return Result(RT.OP, self.stack[-1])
+
         else:
-            return Result(RT.ER, Error(2))
+            return Result(RT.ER, Error(ERROR.ST_UNDRF))
 
     def process(self, rw_data):
         """
@@ -101,7 +103,7 @@ class SRPN_Model:
         """
         if self.stack_ok("stack empty?"):
             actions = { "d" : Result(RT.DT, -2147483648),\
-                        "=" : Result(RT.ER, Error(0,0))}
+                        "=" : Result(RT.ER, Error(ERROR.ST_EMPTY))}
         else:
             actions = { "d" : Result(RT.DS, self.stack),\
                         "=" : Result(RT.DT, self.stack[-1])}
@@ -176,7 +178,7 @@ class SRPN_Model:
 
                 else:
                     self.prepare_response(\
-                            Result(RT.ER, Error(3,element)))
+                            Result(RT.ER, Error(ERROR.UNRECOGN, element)))
 
         except Exception as e:
             print(e)
@@ -209,7 +211,7 @@ class SRPN_Model:
             return Result(RT.IN,data)
 
         else: # stack overflow
-            return Result(RT.ER,Error(1))
+            return Result(RT.ER,Error(ERROR.ST_UNDRF))
         
 
     

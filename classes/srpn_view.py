@@ -7,7 +7,8 @@ class SRPN_View:
 
     def disp_error(self, result):
         """
-        A tidy way to handle errors 
+        A tidy way to handle errors and their associated actions coming from
+        the controller
         """
         if result.data.e_type == ER.ST_EMPTY:
             return("Stack empty.")
@@ -19,9 +20,13 @@ class SRPN_View:
             return("Stack underflow.")
     
         elif result.data.e_type == ER.UNRECOGN:
-            return('Unrecognised operator or operand "{}".'.format(result.data.e_message))
+            return('Unrecognised operator or operand "{}".'\
+                    .format(result.data.e_message))
 
     def disp_wlcm(self):
+        """
+        Returns the message the calculator displays at instantiation
+        """
         welcome_message = "You can now start interacting with the SRPN calculator"
         return (welcome_message)
 

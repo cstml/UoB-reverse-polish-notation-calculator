@@ -17,7 +17,11 @@ class Error:
     e_type = Error_Type.DEFAULTV
     e_message = ""
 
-    def __init__ (self, t, m=0):
+    def __init__ (self, t, m = 0):
+        """
+        The instantiation of the error type takes a 0 default value for the
+        message to avoid having to type it in when it is not required 
+        """
         self.e_type = t
         self.e_message = m
 
