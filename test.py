@@ -285,6 +285,22 @@ class Test_Fourth_Section(unittest.TestCase):
         op = "/"
         self.assertEqual(model.take_in(op), [R(RT.ER, Error(ERROR.DIV0))])
 
+        op = "d"
+        self.assertEqual(model.take_in(op), [R(RT.DS, alist)])
+
+
+class Test_Fifth_Section(unittest.TestCase):
+    def test_5_1(self):
+        """
+        10
+        5
+        -5
+        +
+        /
+        """
+        model = SRPN_Model()
+        model.process_sp_math_ops("10+2+3")
+
 class TestPrintMethods(unittest.TestCase):
 
     def test_initial_message(self):

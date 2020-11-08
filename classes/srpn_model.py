@@ -103,11 +103,19 @@ class SRPN_Model:
         else:
             return Result(RT.ER, Error(ERROR.ST_UNDRF))
 
+    def process_sp_math_ops(self, string):
+        rgx_pat  = '[9-0]+[-+*/%][9-0]+'
+        rgx = re.compile(rgx_pat)
+        res = rgx.finditer(string)
+        print(res)
+
+
     def process(self, rw_data):
         """
         Split the string into substrings
         """
         rw_data = str(rw_data) # be sure it is a string
+        #rw_data = process_sp_math_ops(rw_data)
         data =  rw_data.split() # split it 
         return data
 
@@ -118,10 +126,10 @@ class SRPN_Model:
         """
         if self.stack_ok("stack empty?"):
             actions = { "d" : Result(RT.DT, -2147483648),\
-                        "=" : Result(RT.ER, Error(ERROR.ST_EMPTY))}
+                    "=" : Result(RT.ER, Error(ERROR.ST_EMPTY))}
         else:
             actions = { "d" : Result(RT.DS, self.stack),\
-                        "=" : Result(RT.DT, self.stack[-1])}
+                    "=" : Result(RT.DT, self.stack[-1])}
         return actions[action]
 
     def init_result_list(self):
