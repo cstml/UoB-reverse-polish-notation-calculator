@@ -1,6 +1,7 @@
 # Main VIEW
 
 from classes.result import Result 
+from classes.error import Error_Type as ER
 
 class SRPN_View:
 
@@ -8,16 +9,16 @@ class SRPN_View:
         """
         A tidy way to handle errors 
         """
-        if result.data.e_type == 0:
+        if result.data.e_type == ER.ST_EMPTY:
             return("Stack empty.")
 
-        elif result.data.e_type == 1:
+        elif result.data.e_type == ER.ST_OVRFL:
             return("Stack overflow.")
 
-        elif result.data.e_type == 2:
+        elif result.data.e_type == ER.ST_UNDRF:
             return("Stack underflow.")
     
-        elif result.data.e_type == 3:
+        elif result.data.e_type == ER.UNRECOGN:
             return('Unrecognised operator or operand "{}".'.format(result.data.e_message))
 
     def disp_wlcm(self):
