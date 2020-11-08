@@ -291,15 +291,20 @@ class Test_Fourth_Section(unittest.TestCase):
 
 class Test_Fifth_Section(unittest.TestCase):
     def test_5_1(self):
-        """
-        10
-        5
-        -5
-        +
-        /
-        """
         model = SRPN_Model()
-        model.process_sp_math_ops("10+2+3")
+        self.assertEqual(model.process_sp_math_ops("11+1+1+d"), " 11+1+1 +d")
+        self.assertEqual(model.process_sp_math_ops("-11+1+1+d"), " -11+1+1 +d")
+        self.assertEqual(model.process_sp_math_ops("+-11+1+1+d"), " +-11+1+1 +d")
+
+
+    def test_5_2(self):
+        model = SRPN_Model()
+        self.assertEqual(model.process_rp_r("9r"), "9 r")
+        self.assertEqual(model.process_rp_r("9rr"), "9 r r")
+        self.assertEqual(model.process_rp_r("9rr"), "9 r r")
+        self.assertEqual(model.process_rp_r("9rd"), "9 r d")
+        self.assertEqual(model.process_rp_r("9rr9"), "9 r r 9")
+        self.assertEqual(model.process_rp_r("+rr9"), "+r r 9")
 
 class TestPrintMethods(unittest.TestCase):
 

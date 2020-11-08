@@ -103,19 +103,39 @@ class SRPN_Model:
         else:
             return Result(RT.ER, Error(ERROR.ST_UNDRF))
 
-    def process_sp_math_ops(self, string):
-        rgx_pat  = '[9-0]+[-+*/%][9-0]+'
-        rgx = re.compile(rgx_pat)
-        res = rgx.finditer(string)
-        print(res)
 
+    def process_rp_r(self, string):
+        string = re.sub(r'([0-9])(r)',r'\1 \2',string)
+        string = re.sub(r'(r)(r)',r'\1 \2',string)
+        string = re.sub(r'(d)(r)',r'\1 \2',string)
+
+        string = re.sub(r'(r)([0-9])',r'\1 \2',string)
+        string = re.sub(r'(r)(d)',r'\1 \2',string)
+
+        string = re.sub(r'([0-9])(d)',r'\1 \2',string)
+        string = re.sub(r'(d)([0-9])',r'\1 \2',string)
+
+        return string
+    
+    def process_sp_math_ops(self, string):
+        """Split mathematical strings
+        """
+        rgx_eqs  = r'([-+*/%^]?[-]?[1-9][0-9]*([-+*/%^][-]?[1-9][0-9]*)+)'
+        rgx_eqs_r = r' \1 '
+        string = re.sub(rgx_eqs, rgx_eqs_r, string)
+        return string
+
+    def process_sp_double_signs(self,strig):
+        """ Split signs which are not math expr
+        """
+        rgx_sgns = r'[-+*/%^][-+*/%^](?!=[0-9])'
 
     def process(self, rw_data):
-        """
-        Split the string into substrings
+        """ Split the string into substrings based on spaces 
         """
         rw_data = str(rw_data) # be sure it is a string
-        #rw_data = process_sp_math_ops(rw_data)
+        rw_data = self.process_rp_r(rw_data)
+        rw_data = self.process_sp_math_ops(rw_data)
         data =  rw_data.split() # split it 
         return data
 
