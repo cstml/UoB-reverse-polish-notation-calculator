@@ -18,7 +18,7 @@ class SRPN_View:
             return("Stack underflow.")
     
         elif result.data.e_type == 3:
-            return('Unrecognised operator or operand "{}".'.format(reslt.data.e_message))
+            return('Unrecognised operator or operand "{}".'.format(result.data.e_message))
 
     def disp_wlcm(self):
         welcome_message = "You can now start interacting with the SRPN calculator"
@@ -38,5 +38,6 @@ class SRPN_View:
         """
         out_string = ""
         for number in result.data:
-            out_string += str(number) + " "
+            out_string += str(number) + "\n"
+        out_string = out_string[:-1]
         return out_string

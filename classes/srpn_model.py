@@ -3,14 +3,8 @@
 import re
 from classes.result import Result
 from classes.result import Result_Type as RT
+from classes.error import Error
 
-class Error:
-    e_type = ""
-    e_message = ""
-
-    def __init__ (sef,t,m=0):
-        self.e_type = t
-        self.e_message = m
 
 class SRPN_Model:
     
@@ -49,33 +43,44 @@ class SRPN_Model:
     random_stack_it = 0
 
     def __init__ (self):
-        self.random_stack_it=0;
+        self.random_stack_it=0
+        self.stack = []
 
     def stack_ok(self,op):
+        """
+        Defines operations on the stack that help other methods to take
+        decisions
+        """
         if op == 'Insert':
             if len(self.stack) < 26 :
                 return True
             else:
                 return False
 
-        if op == 'Operation' :
+        elif op == 'Operation' :
             if len(self.stack) <= 1 :
                 return False
             else :
                 return True
 
+        elif op == 'stack empty?':
+            if len(self.stack) == 0:
+                return True
+            else:
+                return False
+
     def operation(self,op):
         op_dict = { "+" : (lambda x, y : x + y),\
                     "-" : (lambda x, y : x - y),\
-                    "/" : (lambda x, y : x / y),\
+                    "/" : (lambda x, y : x // y),\
                     "%" : (lambda x, y : x % y),\
                     "*" : (lambda x, y : x * y),\
                     "^" : (lambda x, y : pow(x,y))}
 
         if self.stack_ok("Operation"):
             self.stack[-2] = self.saturate(op_dict[op](\
-                                                self.stack[-1],\
-                                                self.stack[-2]))
+                                                self.stack[-2],\
+                                                self.stack[-1]))
             self.stack.pop(-1)
             return Result(RT.OP, self.stack[-1])
         else:
@@ -85,12 +90,21 @@ class SRPN_Model:
         """
         Split the string into substrings
         """
-        data =  rw_data.split()
+        rw_data = str(rw_data) # be sure it is a string
+        data =  rw_data.split() # split it 
         return data
 
+
     def action(self, action):
-        actions = { "d" : Result(RT.DS, self.stack),\
-                    "=" : Result(RT.DT, self.stack[-1])}
+        """
+        Defines the return for for 
+        """
+        if self.stack_ok("stack empty?"):
+            actions = { "d" : Result(RT.DT, -2147483648),\
+                        "=" : Result(RT.ER, Error(0,0))}
+        else:
+            actions = { "d" : Result(RT.DS, self.stack),\
+                        "=" : Result(RT.DT, self.stack[-1])}
         return actions[action]
 
     def init_result_list(self):
@@ -145,7 +159,7 @@ class SRPN_Model:
         """
         self.init_result_list()
         processed_data = self.process(rw_data)
-        print(processed_data)
+        #print(processed_data)
         try:
             for element in processed_data:
                 if self.is_number(element): # check if it is a number
@@ -157,7 +171,7 @@ class SRPN_Model:
                     self.prepare_response(self.operation(element))
 
                 elif self.is_action(element): # check if it is an action
-                    print("is action")
+                    #print("is action")
                     self.prepare_response(self.action(element))
 
                 else:

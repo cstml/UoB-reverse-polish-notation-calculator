@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
 # SRPN Controller
-#
-# Comment: I decided to go down the path of an MVC to be better abbl to test
-# the code 
 
 from classes.srpn_view  import SRPN_View
 from classes.srpn_model import SRPN_Model
@@ -38,7 +35,7 @@ class SRPN_Controller:
         the data
         """
         for i in range(len(result_list)):
-            print ("step {}data: {} code: {}".format(\
+            print ("step: {}, code: {}, data: {}".format(\
                     i,result_list[i].code,result_list[i].data)) #[DEBUG]
 
         for result in result_list:
