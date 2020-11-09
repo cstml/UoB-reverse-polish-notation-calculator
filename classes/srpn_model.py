@@ -144,9 +144,18 @@ class SRPN_Model:
             string = re.sub(r'\s+(d)\s+$',r' \1',string)
             string = re.sub(r'^\s+(d)\s+',r'\1 ',string)
             string = re.sub(r'^\s+(d)\s+$',r'\1',string)
-
-
         return string
+
+    def delete_comms(self, string):
+        comms_rgx = r'(#[^#]*#)|(#[^#]*$)'   # comments must be deleted 1 by one 
+        while re.search(comms_rgx, string):
+            i_com = re.finditer(comms_rgx, string)
+            inst = next(i_com)
+            start = inst.start()
+            end = inst.end()
+            string = string[:start] + string[end:]
+        return string
+            
 
     def replace_r(self, string):
         """ 
@@ -208,7 +217,7 @@ class SRPN_Model:
             end = inst.end()
             number = inst.group()
             conversion = self.octal_to_decimal(number)
-            string=string[:start] + conversion + string[end:]
+            string = string[:start] + conversion + string[end:]
         return string
 
 
@@ -216,6 +225,7 @@ class SRPN_Model:
         """ Split the string into substrings based on spaces 
         """
         rw_data = str(rw_data) # be sure it is a string
+        rw_data = self.delete_comms(rw_data)
         rw_data = self.process_rp_r(rw_data)
         rw_data = self.replace_r(rw_data)
         rw_data = self.process_sp_math_ops(rw_data)
@@ -286,8 +296,6 @@ class SRPN_Model:
         else:
             return Result(RT.ER, Error(ERROR.ST_UNDRF))
 
-
-
     def action(self, action):
         """
         Defines the return for for 
@@ -299,7 +307,6 @@ class SRPN_Model:
             actions = { "d" : Result(RT.DS, self.stack),\
                     "=" : Result(RT.DT, self.stack[-1])}
         return actions[action]
-
 
     def reg_match(self,data,expr):
         """
