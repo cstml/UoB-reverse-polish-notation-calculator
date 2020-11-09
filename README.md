@@ -21,10 +21,11 @@ make test
 ```
 
 ## To Do
-[ ] - implement r
-[ ] - implement d
-[ ] - holds 24
-[ ] - implement random
+[x] - implement r
+[x] - implement d
+[x] - holds 24
+[x] - implement random
+[ ] - implement comments 
 
 
 LINK
