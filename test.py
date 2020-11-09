@@ -341,7 +341,7 @@ class Test_Seventh_Section(unittest.TestCase):
     """
     evaluate if the power is working accordingly
     """
-    def test_4_2(self): 
+    def test_7_1_simple_power(self): 
         """
         1
         2
@@ -371,6 +371,34 @@ class Test_Seventh_Section(unittest.TestCase):
 
         op = "d"
         self.assertEqual(model.take_in(op), [R(RT.DS, alist)])
+
+    def test_7_2_operation_power(self): 
+        """
+        1
+        /2^2
+        =
+        """
+        model = SRPN_Model()
+        alist = []
+
+        nr1 = 1
+        r1 = R(RT.IN, nr1)
+        alist.append(nr1)
+        self.assertEqual(model.take_in(str(nr1)), [r1])
+
+        nr1 = "/2^2"
+        alist[-1] = alist[-1] // pow(2,2)
+        r1 = R(RT.OP, alist[-1])
+        self.assertEqual(model.take_in(nr1), [r1])
+
+        print(alist)
+        op = "="
+        self.assertEqual(model.take_in(op), [R(RT.DT, alist[-1])])
+
+        op = "d"
+        self.assertEqual(model.take_in(op), [R(RT.DS, alist)])
+
+        
 
 class TestPrintMethods(unittest.TestCase):
 
