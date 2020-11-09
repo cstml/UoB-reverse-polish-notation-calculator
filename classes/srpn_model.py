@@ -349,7 +349,6 @@ class SRPN_Model:
             return Result(RT.ER,Error(ERROR.ST_UNDRF))
 
     def create_list(self, element):
-        print(element)
         try:
                 if self.is_number(element): # check if it is a number
                     # print("is number")
@@ -369,7 +368,6 @@ class SRPN_Model:
                     self.prepare_response(self.evaluate(element))
 
                 elif self.is_special_eval(element): 
-                    print("is special")
                     response = self.sp_eval(element)
                     self.prepare_response(response)
                     if response.code == RT.ER and \
