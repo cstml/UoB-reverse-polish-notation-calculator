@@ -2,3 +2,5 @@
 # files addded from cstml template gitignore
 *swp
 *tags
+*vscode
+__pycache__

@@ -34,9 +34,11 @@ class SRPN_Controller:
         takes the list of results and based on the code sends to the view
         the data
         """
+        """Debug only code [TO DO] delete 
         for i in range(len(result_list)):
             print ("step: {}, code: {}, data: {}".format(\
                     i,result_list[i].code,result_list[i].data)) #[DEBUG]
+        """
 
         for result in result_list:
 
