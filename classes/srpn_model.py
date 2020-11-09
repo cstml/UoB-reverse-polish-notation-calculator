@@ -363,7 +363,9 @@ class SRPN_Model:
         executes a simple mathematical evaluation unto the top of the stack
         """
         op = data[0]
-        data = eval(data[1:])
+        data = data[1:]
+        data = self.replace_powers(data)
+        data = eval(data)
         result = self.operation2(op,data)
         return(result)
 
@@ -381,6 +383,9 @@ class SRPN_Model:
             return number
 
     def replace_powers(self, string):
+        """
+        replace ^ with ** so it is evaluatede correctly
+        """
         expr  = r'\^'
         string = re.sub(expr, r'**', string)
         return string
@@ -422,7 +427,7 @@ class SRPN_Model:
 
                 elif self.is_eval(element): # check if it is a simple evaluation
                     #print("is eval")
-                    self.prepare_eval(element)
+                    element = self.prepare_eval(element)
                     self.prepare_response(self.evaluate(element))
 
                 elif self.is_special_eval(element): 

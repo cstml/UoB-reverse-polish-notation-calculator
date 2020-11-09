@@ -233,7 +233,6 @@ class Test_Third_Section(unittest.TestCase):
         op = "="
         self.assertEqual(model.take_in(op), [R(RT.DT, alist[-1])])
 
-
 class Test_Fourth_Section(unittest.TestCase):
     def test_4_1(self):
         """
@@ -288,7 +287,6 @@ class Test_Fourth_Section(unittest.TestCase):
         op = "d"
         self.assertEqual(model.take_in(op), [R(RT.DS, alist)])
 
-
 class Test_Fifth_Section(unittest.TestCase):
     def test_5_1(self):
         model = SRPN_Model()
@@ -339,7 +337,40 @@ class Test_Sixth_Section(unittest.TestCase):
         self.assertEqual(model.octal_transform("-020"),"-16")
         self.assertEqual(model.octal_transform("+-00000020"),"+-16")
 
+class Test_Seventh_Section(unittest.TestCase):
+    """
+    evaluate if the power is working accordingly
+    """
+    def test_4_2(self): 
+        """
+        1
+        2
+        ^
+        =
+        """
+        model = SRPN_Model()
+        alist = []
 
+        nr1 = 1
+        r1 = R(RT.IN, nr1)
+        alist.append(nr1)
+        self.assertEqual(model.take_in(str(nr1)), [r1])
+
+        nr1 = 2
+        r1 = R(RT.IN, nr1)
+        alist.append(nr1)
+        self.assertEqual(model.take_in(str(nr1)), [r1])
+
+        op = "^"
+        alist[-2] = pow(alist[-2] ,alist[-1])
+        alist.pop(-1)
+        self.assertEqual(model.take_in(op), [R(RT.OP, alist[-1])])
+
+        op = "="
+        self.assertEqual(model.take_in(op), [R(RT.DT, alist[-1])])
+
+        op = "d"
+        self.assertEqual(model.take_in(op), [R(RT.DS, alist)])
 
 class TestPrintMethods(unittest.TestCase):
 
