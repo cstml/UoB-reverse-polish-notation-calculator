@@ -1,13 +1,11 @@
 # Reverse Polish Notation Calcultor
 
-author: Vlad P Luchian
-
 for: Principles of programming
 
 # How to
 ## Run
 ```Bash
-make run
+make
 ```
 
 ## Debug
@@ -16,6 +14,8 @@ make debug
 ```
 
 ## Test
+There are quite a few tests developed for the calculator.
+- to run them run:
 ```Bash
 make test
 ```
