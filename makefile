@@ -1,3 +1,5 @@
+#!/usr/bin/sh
+
 .PHONY : run test debug 
 
 run : 
