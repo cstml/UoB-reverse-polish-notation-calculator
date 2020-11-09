@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
+
 from enum import Enum
 
 class Result_Type(Enum):
+    """
+    Enum holding the types of Results that the operations in the model can have
+    helps the controller recognise what to do with the information it receives 
+    """
     DF = -1 # Default Value
     DT = 0  # Display Top
     DS = 1  # Display Stack
@@ -23,6 +28,9 @@ class Result:
         self.data = data
 
     def __eq__(self, other):
+        """
+        defines a methhod for the defau
+        """
         if not isinstance(other, Result):
             return NotImplemented
         return self.code == other.code and self.data == other.data

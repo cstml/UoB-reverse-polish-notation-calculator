@@ -127,9 +127,10 @@ class SRPN_Model:
         Introduces spaces between r's and d's based on what is surrounding
         them 
         """
-
+                            # This would be where I would start my Refactoring      
         for i in range(10): # [TO DO] the regex sometimes skips some good cases
                             # to revisit whe I have time
+            i = i           # added it here to avoid the linter warning
             string = re.sub(r'([0-9])(r)',r'\1 \2',string)
             string = re.sub(r'(r)(r)',r'\1 \2',string)
             string = re.sub(r'(d)(r)',r'\1 \2',string)
@@ -151,9 +152,9 @@ class SRPN_Model:
         """
         comms parser 
         """
-        comms_rgx_encaps = r'((\s|^)#(\s?[^#])*\s#)'   # comments must be deleted 1 by one 
-        comms_rgx_hanging = r'((\s|^)#.*(?=$))'    
-        comms_rgx_closing = r'((^|\s)[^#]*#)'    
+        comms_rgx_encaps = r'((\s|^)#(\s?[^#])*\s#)' # complete comments 
+        comms_rgx_hanging = r'((\s|^)#.*(?=$))' # incomplete comments
+        comms_rgx_closing = r'((^|\s)[^#]*#)' # the lid for incomplete coments 
         if self.env_comenting_flag == False:
             """
             if commenting flag is down
@@ -172,7 +173,7 @@ class SRPN_Model:
             """
             if commenting flag is up
             delete everything until the coments are closed
-            and then re-parse for encapsulated 
+            and then re-parse for encapsulated / i.e. proper comment blocks
             """
             if re.search(comms_rgx_closing, string):
                 self.env_comenting_flag = False
@@ -310,16 +311,20 @@ class SRPN_Model:
         else:
             return Result(RT.ER, Error(ERROR.ST_UNDRF))
 
-    def operation(self, op):
+    def operation(self, op):        
+        """ 
+        defines what happens when an operation is received 
+        """
         op_dict = { "+" : (lambda x, y : x + y),\
                     "-" : (lambda x, y : x - y),\
                     "/" : (lambda x, y : x // y),\
                     "%" : (lambda x, y : x % y),\
                     "*" : (lambda x, y : x * y),\
                     "^" : (lambda x, y : pow(x,y))}
+                    # lambda functions look very nice 
 
-        if self.stack_ok("Operation"):
-            if self.operation_ok(op):
+        if self.stack_ok("Operation"): # is the stack in underflow
+            if self.operation_ok(op): # avoid division by 0
                 self.stack[-2] = self.saturate(op_dict[op](\
                                                     self.stack[-2],\
                                                     self.stack[-1]))
@@ -328,7 +333,6 @@ class SRPN_Model:
             elif op == "/":
                 return Result(RT.ER, Error(ERROR.DIV0))
 
-
             return Result(RT.OP, self.stack[-1])
 
         else:
@@ -336,7 +340,8 @@ class SRPN_Model:
 
     def action(self, action):
         """
-        Defines the return for for 
+        Defines the return for for the printing and display 
+        action
         """
         if self.stack_ok("stack empty?"):
             actions = { "d" : Result(RT.DT, -2147483648),\
@@ -456,9 +461,11 @@ class SRPN_Model:
             return Result(RT.ER,Error(ERROR.ST_OVRFL))
 
     def create_list(self, element):
+        """
+        creates the list of responses that gets sent back to the controller
+        """
         try:
                 if self.is_number(element): # check if it is a number
-                    # print("is number")
                     element = int(element)
                     result = self.insert_data(element)
                     self.prepare_response(result)
@@ -467,15 +474,13 @@ class SRPN_Model:
                     self.prepare_response(self.operation(element))
 
                 elif self.is_action(element): # check if it is an action
-                    #print("is action")
                     self.prepare_response(self.action(element))
 
                 elif self.is_eval(element): # check if it is a simple evaluation
-                    #print("is eval")
                     element = self.prepare_eval(element)
                     self.prepare_response(self.evaluate(element))
 
-                elif self.is_special_eval(element): 
+                elif self.is_special_eval(element):  # is it a special evaluation?
                     response = self.sp_eval(element)
                     self.prepare_response(response)
                     if response.code == RT.ER and \
@@ -512,8 +517,3 @@ class SRPN_Model:
             self.create_list(element)
 
         return self.result_list
-
-        
-
-    
-
