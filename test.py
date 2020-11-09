@@ -1,12 +1,12 @@
 import unittest
 
 try:
-    from classes.error import Error
-    from classes.error import Error_Type as ERROR
-    from classes.result import Result as R
-    from classes.result import Result_Type as RT
-    from classes.srpn_model import SRPN_Model
-    from classes.srpn_view import SRPN_View
+    from error import Error
+    from error import Error_Type as ERROR
+    from result import Result as R
+    from result import Result_Type as RT
+    from srpn_model import SRPN_Model
+    from srpn_view import SRPN_View
     
 except Exception as e:
     print(e)

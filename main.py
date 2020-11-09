@@ -10,7 +10,7 @@
 # In the same manner the model could be transported to a different program
 
 
-from classes.srpn_controller import SRPN_Controller
+from srpn_controller import SRPN_Controller
 
 if __name__=="__main__":
     calculator = SRPN_Controller()

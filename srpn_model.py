@@ -4,10 +4,10 @@
 # model module
 
 import re
-from classes.result import Result
-from classes.result import Result_Type as RT
-from classes.error import Error_Type as ERROR
-from classes.error import Error
+from result import Result
+from result import Result_Type as RT
+from error import Error_Type as ERROR
+from error import Error
 
 
 class SRPN_Model:

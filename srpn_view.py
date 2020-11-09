@@ -3,8 +3,8 @@
 # SRPN Calculator 
 # view module
 
-from classes.result import Result 
-from classes.error import Error_Type as ER
+from result import Result 
+from error import Error_Type as ER
 
 class SRPN_View:
 

@@ -3,10 +3,10 @@
 # SRPN Calculator 
 # controller module
 
-from classes.srpn_view  import SRPN_View
-from classes.srpn_model import SRPN_Model
-from classes.result     import Result
-from classes.result     import Result_Type as RT
+from srpn_view  import SRPN_View
+from srpn_model import SRPN_Model
+from result     import Result
+from result     import Result_Type as RT
 
 class SRPN_Controller:
     """
