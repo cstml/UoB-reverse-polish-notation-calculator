@@ -304,7 +304,40 @@ class Test_Fifth_Section(unittest.TestCase):
         self.assertEqual(model.process_rp_r("9rr"), "9 r r")
         self.assertEqual(model.process_rp_r("9rd"), "9 r d")
         self.assertEqual(model.process_rp_r("9rr9"), "9 r r 9")
+        self.assertEqual(model.process_rp_r("rrrr"), "r r r r")
         self.assertEqual(model.process_rp_r("+rr9"), "+r r 9")
+
+    def test_5_3(self):
+        model = SRPN_Model()
+        self.assertEqual(model.replace_r("9 r"), "9 1804289383")
+
+    def test_5_5_test_randoms(self):
+        model = SRPN_Model()
+        self.assertEqual(model.replace_r("r r r"), "1804289383 846930886 1681692777")
+
+    def test_5_5_test_all_randoms(self):
+        model = SRPN_Model()
+        self.assertEqual(model.replace_r("r r r"),"1804289383 846930886 1681692777")
+        self.assertEqual(model.replace_r("r r r"),"1714636915 1957747793 424238335")
+        self.assertEqual(model.replace_r("r r r"),"719885386 1649760492 596516649")
+        self.assertEqual(model.replace_r("r r r"),"1189641421 1025202362 1350490027")
+        self.assertEqual(model.replace_r("r r r"),"783368690 1102520059 2044897763")
+        self.assertEqual(model.replace_r("r r r"),"1967513926 1365180540 1540383426")
+        self.assertEqual(model.replace_r("r r r"),"304089172 1303455736 35005211")
+        self.assertEqual(model.replace_r("r r r"),"521595368 1804289383 846930886")
+
+    def test_5_3_test_processing(self):
+        model = SRPN_Model()
+        self.assertEqual(model.process("rrr"),["1804289383",\
+                                                "846930886",\
+                                                "1681692777"])
+
+class Test_Sixth_Section(unittest.TestCase):
+    def test_octal_function(self):
+        model = SRPN_Model()
+        self.assertEqual(model.octal_transform("020"),"16")
+        self.assertEqual(model.octal_transform("-020"),"-16")
+        self.assertEqual(model.octal_transform("+-00000020"),"+-16")
 
 class TestPrintMethods(unittest.TestCase):
 
