@@ -396,7 +396,7 @@ class SRPN_Model:
         checks if the element is a mathematical evaluation that is then
         evaluated on the last element of the stack
         """
-        expr  = '^([+*/%^-]?[-]?[1-9][0-9]*([-+*/%^][-]?[1-9][0-9]*)*)'
+        expr  = '^([+*/%^]?[-]?[1-9][0-9]*([-+*/%^][-]?[1-9][0-9]*)*)'
         return self.reg_match(data,expr)
 
     def is_block_of_op(self, data):
