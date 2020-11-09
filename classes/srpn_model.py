@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # SRPN Model Class
 
 import re
@@ -19,7 +21,7 @@ class SRPN_Model:
     stack = []
     result_list = []
     
-    random_stack = []
+    random_stack = list()
     random_stack_it = 0
 
     def __init__ (self):
@@ -48,6 +50,26 @@ class SRPN_Model:
         self.random_stack.append(35005211)
         self.random_stack.append(521595368)
 
+####################################################################
+# Logistical Methods
+####################################################################
+    def init_result_list(self):
+        """
+        Initialise the result list
+        """
+        self.result_list = []       # initialise the list of results 
+        return 0
+
+    def prepare_response(self, result):
+        """
+        Appends each result to the list
+        """
+        self.result_list.append(result)
+        return 0
+
+####################################################################
+# Stack interogation Methods
+####################################################################
     def stack_ok(self, op):
         """
         Defines operations on the stack that help other methods to take
@@ -66,6 +88,9 @@ class SRPN_Model:
                 return True
 
         elif op == 'Operation2' :
+            """
+            Operation 2 is the one line operation
+            """
             if len(self.stack) < 1 :
                 return False
             else :
@@ -93,9 +118,12 @@ class SRPN_Model:
         else:
             return True
 
-
+####################################################################
+# String Pre Processing Methods
+####################################################################
     def process_rp_r(self, string):
-        """ Introduces spaces between r's and d's based on what is surrounding
+        """ 
+        Introduces spaces between r's and d's based on what is surrounding
         them 
         """
 
@@ -121,7 +149,8 @@ class SRPN_Model:
         return string
 
     def replace_r(self, string):
-        """ replace r with randon number from queue
+        """ 
+        replace r with randon number from queue
         """
         while re.findall(r'(r)',string):
             string = re.sub(r'r', str(self.random_stack[self.random_stack_it]),\
@@ -133,7 +162,8 @@ class SRPN_Model:
         return string
     
     def process_sp_math_ops(self, string):
-        """Split mathematical strings
+        """
+        Split mathematical strings
         """
         rgx_eqs  = r'([-+*/%^]?[-]?[1-9][0-9]*([-+*/%^][-]?[1-9][0-9]*)+)'
         rgx_eqs_r = r' \1 '
@@ -141,11 +171,16 @@ class SRPN_Model:
         return string
 
     def process_sp_double_signs(self,strig):
-        """ Split signs which are not math expr
+        """ 
+        Split signs which are not math expr
         """
 
     def octal_to_decimal(self,string):
-        """ Octal conversion
+        """ 
+        Octal conversion function
+        Takes in a string
+        Changes every octal to an integer
+        if there are many leading 0's it deletes them
         """
         if string[0] == '-':
             sign = -1
@@ -188,9 +223,16 @@ class SRPN_Model:
         data =  rw_data.split() # split it 
         return data
 
+
+####################################################################
+# Stack Operation Methods
+####################################################################
+
     def operation2(self, op, element):
-        """ similar to normal operation but it happens when we have a sign
-        before the number
+        """ 
+        similar to normal operation but it happens when we have a sign
+        before the number - i.e. the operation happens to the top of 
+        the stack
         """
         op_dict = { "+" : (lambda x, y : x + y),\
                     "-" : (lambda x, y : x - y),\
@@ -211,6 +253,10 @@ class SRPN_Model:
             return Result(RT.OP, self.stack[-1])
 
         elif self.stack_ok("stack empty?"):
+            """
+            if the stack is empty then we just add the result to the
+            stack
+            """
             return Result(RT.ER, Error(ERROR.ST_UNDRF,2))
 
         else:
@@ -254,21 +300,12 @@ class SRPN_Model:
                     "=" : Result(RT.DT, self.stack[-1])}
         return actions[action]
 
-    def init_result_list(self):
-        """
-        Initialise the result list
-        """
-        self.result_list = []       # initialise the list of results 
-        return 0
-
-    def prepare_response(self, result):
-        """
-        Appends each result to the list
-        """
-        self.result_list.append(result)
-        return 0
 
     def reg_match(self,data,expr):
+        """
+        Returs if an element matches the associated
+        regular expression
+        """
         number_rx = re.compile(expr)
         if number_rx.match(data) != None:
             return True
@@ -291,25 +328,30 @@ class SRPN_Model:
         return self.reg_match(data,expr)
 
     def is_action(self,data):
-        """ verifies if element is action
+        """ 
+        verifies if element is action
         """
         expr = '[d=]'
         return self.reg_match(data,expr)
 
     def is_eval(self, data):
-        """ checks if the element is a simple mathematical evaluation
+        """ 
+        checks if the element is a simple mathematical evaluation
         """
         expr  = '^([-]?[1-9][0-9]*([-+*/%^][-]?[1-9][0-9]*)+)'
         return self.reg_match(data,expr)
 
     def is_special_eval(self, data):
-        """ checks if the element is a simple mathematical evaluation
+        """ 
+        checks if the element is a mathematical evaluation that is then
+        evaluated on the last element of the stack
         """
         expr  = '^([+*/%^]?[-]?[1-9][0-9]*([-+*/%^][-]?[1-9][0-9]*)*)'
         return self.reg_match(data,expr)
 
     def evaluate(self, data):
-        """ transforms a simple mathematical evaluation into an insertable
+        """ 
+        transforms a simple mathematical evaluation into an insertable
         number
         """
         data = eval(data)
@@ -317,7 +359,8 @@ class SRPN_Model:
         return(result)
 
     def sp_eval(self, data):
-        """ executes a simple mathematical evaluation unto the top of the stack
+        """ 
+        executes a simple mathematical evaluation unto the top of the stack
         """
         op = data[0]
         data = eval(data[1:])
@@ -325,7 +368,8 @@ class SRPN_Model:
         return(result)
 
     def saturate(self, number):
-        """ saturates the number either up or down
+        """ 
+        saturates the number either up or down
         based on the maximum number
         if the number is within the range it is returned
         """
@@ -336,9 +380,22 @@ class SRPN_Model:
         else:
             return number
 
+    def replace_powers(self, string):
+        expr  = r'\^'
+        string = re.sub(expr, r'**', string)
+        return string
+
+    def prepare_eval(self, string):
+        """
+        does some extra preparation for the eval to execute correctly
+        """
+        string = self.replace_powers(string)
+        return string
+
     def insert_data(self, data):
-        """ inserts data into the stack and returns a Result containing the
-        last number inserted and code 2
+        """ 
+        inserts data into the stack and returns a Result containing the
+        last number inserted
         """
         if self.stack_ok("Insert"):
             data = self.saturate(data)
@@ -365,6 +422,7 @@ class SRPN_Model:
 
                 elif self.is_eval(element): # check if it is a simple evaluation
                     #print("is eval")
+                    self.prepare_eval(element)
                     self.prepare_response(self.evaluate(element))
 
                 elif self.is_special_eval(element): 
