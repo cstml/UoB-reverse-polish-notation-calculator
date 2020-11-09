@@ -111,8 +111,12 @@ class SRPN_Model:
             string = re.sub(r'([0-9])(d)',r'\1 \2',string)
             string = re.sub(r'(d)([0-9])',r'\1 \2',string)
 
-        string = re.sub(r'[^ ](d)',r' \1',string)
-        string = re.sub(r'(d)[^ ]',r'\1 ',string)
+            string = re.sub(r'(d)',r' \1 ',string)
+            string = re.sub(r'\s+(d)\s+',r' \1 ',string)
+            string = re.sub(r'\s+(d)\s+$',r' \1',string)
+            string = re.sub(r'^\s+(d)\s+',r'\1 ',string)
+            string = re.sub(r'^\s+(d)\s+$',r'\1',string)
+
 
         return string
 
@@ -168,7 +172,6 @@ class SRPN_Model:
             start = inst.start()
             end = inst.end()
             number = inst.group()
-            print(number)
             conversion = self.octal_to_decimal(number)
             string=string[:start] + conversion + string[end:]
         return string
@@ -206,6 +209,9 @@ class SRPN_Model:
                 return Result(RT.ER, Error(ERROR.DIV0))
 
             return Result(RT.OP, self.stack[-1])
+
+        elif self.stack_ok("stack empty?"):
+            return Result(RT.ER, Error(ERROR.ST_UNDRF,2))
 
         else:
             return Result(RT.ER, Error(ERROR.ST_UNDRF))
@@ -364,7 +370,11 @@ class SRPN_Model:
 
                 elif self.is_special_eval(element): 
                     print("is special")
-                    self.prepare_response(self.sp_eval(element))
+                    response = self.sp_eval(element)
+                    self.prepare_response(response)
+                    if response.code == RT.ER and \
+                            response.data == Error(ERROR.ST_UNDRF,2):
+                        self.prepare_response(self.evaluate(element[1:]))
 
                 else:
                     for letter in element:

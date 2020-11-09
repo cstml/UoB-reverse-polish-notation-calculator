@@ -339,6 +339,8 @@ class Test_Sixth_Section(unittest.TestCase):
         self.assertEqual(model.octal_transform("-020"),"-16")
         self.assertEqual(model.octal_transform("+-00000020"),"+-16")
 
+
+
 class TestPrintMethods(unittest.TestCase):
 
     def test_initial_message(self):
