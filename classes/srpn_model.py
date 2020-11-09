@@ -396,7 +396,14 @@ class SRPN_Model:
         checks if the element is a mathematical evaluation that is then
         evaluated on the last element of the stack
         """
-        expr  = '^([+*/%^]?[-]?[1-9][0-9]*([-+*/%^][-]?[1-9][0-9]*)*)'
+        expr  = '^([+*/%^-]?[-]?[1-9][0-9]*([-+*/%^][-]?[1-9][0-9]*)*)'
+        return self.reg_match(data,expr)
+
+    def is_block_of_op(self, data):
+        """ 
+        checks if the element is a block of operation
+        """
+        expr  = '^[/%*+-^]+'
         return self.reg_match(data,expr)
 
     def evaluate(self, data):
@@ -486,6 +493,10 @@ class SRPN_Model:
                     if response.code == RT.ER and \
                             response.data == Error(ERROR.ST_UNDRF,2):
                         self.prepare_response(self.evaluate(element[1:]))
+                
+                elif self.is_block_of_op(element):
+                    for op in element:
+                        self.prepare_response(self.operation(op))
 
                 else:
                     if element == "":
