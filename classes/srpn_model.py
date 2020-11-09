@@ -151,9 +151,9 @@ class SRPN_Model:
         """
         comms parser 
         """
-        comms_rgx_encaps = r'(#[^#]*#(?=.))'   # comments must be deleted 1 by one 
-        comms_rgx_hanging = r'(#[^#]*(?=$))'    
-        comms_rgx_closing = r'([^#]*#)'    
+        comms_rgx_encaps = r'((\s|^)#(\s?[^#])*\s#)'   # comments must be deleted 1 by one 
+        comms_rgx_hanging = r'((\s|^)#.*(?=$))'    
+        comms_rgx_closing = r'((^|\s)[^#]*#)'    
         if self.env_comenting_flag == False:
             """
             if commenting flag is down
@@ -193,7 +193,7 @@ class SRPN_Model:
                         1)
             self.random_stack_it += 1
             if self.random_stack_it == len(self.random_stack):
-                self.random_stack = 0
+                self.random_stack_it = 0
         return string
     
     def process_sp_math_ops(self, string):
@@ -247,6 +247,13 @@ class SRPN_Model:
             string = string[:start] + conversion + string[end:]
         return string
 
+    def space_bad_comm(self, string):
+        """
+        add a space between unrecognisable # and recognisable letters 
+        """
+        string = re.sub(r'([0-9+-/%*^#])(#)',r'\1 \2',string)
+        return string
+
 
     def process(self, rw_data):
         """ 
@@ -255,6 +262,7 @@ class SRPN_Model:
         rw_data = str(rw_data) # be sure it is a string
         rw_data = self.delete_comms(rw_data)
         if self.env_comenting_flag == False :
+            rw_data = self.space_bad_comm(rw_data)
             rw_data = self.process_rp_r(rw_data)
             rw_data = self.replace_r(rw_data)
             rw_data = self.process_sp_math_ops(rw_data)
@@ -445,7 +453,7 @@ class SRPN_Model:
             return Result(RT.IN,data)
 
         else: # stack overflow
-            return Result(RT.ER,Error(ERROR.ST_UNDRF))
+            return Result(RT.ER,Error(ERROR.ST_OVRFL))
 
     def create_list(self, element):
         try:

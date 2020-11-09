@@ -398,7 +398,54 @@ class Test_Seventh_Section(unittest.TestCase):
         op = "d"
         self.assertEqual(model.take_in(op), [R(RT.DS, alist)])
 
-        
+
+    def test_7_3_Removing_encapsulated_comments(self): 
+        model = SRPN_Model()
+        alist = list()
+        nr1 = "1 #comment 1 #"
+        r1 = R(RT.IN, 1)
+        alist.append(1)
+        self.assertEqual(model.take_in(str(nr1)), [r1])
+
+        nr1 = "1 #comment 1#"
+        r1 = R(RT.IN, 1)
+        alist.append(1)
+        self.assertEqual(model.take_in(str(nr1)), [r1])
+
+
+    def test_7_4_Removing_line_comms(self): 
+        model = SRPN_Model()
+        alist = list()
+        nr1 = "11 #"
+        r1 = R(RT.IN, 11)
+        alist.append(11)
+        self.assertEqual(model.take_in(str(nr1)), [r1])
+
+        nr1 = "112"
+        r1 = R(RT.DO_NOTHING)
+        self.assertEqual(model.take_in(str(nr1)), [r1])
+
+        nr1 = "#112"
+        r1 = R(RT.IN, 112)
+        alist.append(112)
+        self.assertEqual(model.take_in(str(nr1)), [r1])
+
+    def test_7_5_Removing_line_comms_and_doing_op(self): 
+        model = SRPN_Model()
+        alist = list()
+        nr1 = "11 #"
+        r1 = R(RT.IN, 11)
+        alist.append(11)
+        self.assertEqual(model.take_in(str(nr1)), [r1])
+
+        nr1 = "112"
+        r1 = R(RT.DO_NOTHING)
+        self.assertEqual(model.take_in(str(nr1)), [r1])
+
+        nr1 = "# /2^2"
+        alist[-1] = alist[-1] // pow(2,2)
+        r1 = R(RT.OP, alist[-1])
+        self.assertEqual(model.take_in(nr1), [r1])
 
 class TestPrintMethods(unittest.TestCase):
 
