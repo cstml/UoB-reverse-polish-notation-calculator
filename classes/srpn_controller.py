@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-# SRPN Controller
+
+# SRPN Calculator 
+# controller module
 
 from classes.srpn_view  import SRPN_View
 from classes.srpn_model import SRPN_Model

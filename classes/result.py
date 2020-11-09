@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+# SRPN Calculator 
+# result module
+
 from enum import Enum
 
 class Result_Type(Enum):

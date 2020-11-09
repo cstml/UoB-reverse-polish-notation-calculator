@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-# SRPN Model Class
+# SRPN Calculator 
+# model module
 
 import re
 from classes.result import Result
@@ -201,7 +202,7 @@ class SRPN_Model:
         """
         Split mathematical strings
         """
-        rgx_eqs  = r'([-+*/%^]?[-]?[1-9][0-9]*([-+*/%^][-]?[1-9][0-9]*)+)'
+        rgx_eqs  = r'([+*/%^]?[-]?[1-9][0-9]*([+*/%^][-]?[1-9][0-9]*)*)'
         rgx_eqs_r = r' \1 '
         string = re.sub(rgx_eqs, rgx_eqs_r, string)
         return string

@@ -1,4 +1,7 @@
-# Main VIEW
+#!/usr/bin/env python3
+
+# SRPN Calculator 
+# view module
 
 from classes.result import Result 
 from classes.error import Error_Type as ER
@@ -7,8 +10,8 @@ class SRPN_View:
 
     def disp_error(self, result):
         """
-        A tidy way to handle errors and their associated actions coming from
-        the controller
+        An Error handler. Unpacks the result and returns the 
+        needed display for the controller to show the user
         """
         if result.data.e_type == ER.ST_EMPTY:
             return("Stack empty.")

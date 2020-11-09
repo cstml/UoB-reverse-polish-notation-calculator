@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+# SRPN Calculator 
+# Error module
+
 # An error carrier helper class 
 # It is created by the model class and passed by the controller to the view 
 # which then uses its attached information to create its view
