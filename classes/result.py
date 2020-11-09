@@ -8,12 +8,17 @@ class Result_Type(Enum):
     IN = 2  # Insertion Succesfull
     ER = 3
     OP = 5
+    DO_NOTHING = 6 # does nothing-useful for testing if the comenter is working
 
 class Result:
     code = Result_Type.DF
     data = -1
 
-    def __init__ (self, code, data):
+    def __init__ (self, code, data = 0):
+        """
+        initialiser of response
+        data is by default 0 to allow the Result to be created without any data
+        """
         self.code = code
         self.data = data
 

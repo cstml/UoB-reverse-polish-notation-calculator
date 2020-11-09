@@ -10,17 +10,18 @@ from classes.error import Error
 
 
 class SRPN_Model:
-    
-    TP_CM = '='
-    SD_CM = 'd'
-    RA_CM = 'r'
-    AD_CM = '+'
-    MAX_UP = 2147483647
-    MAX_DN = -2147483648
-    
-    stack = []
+    """
+    SRPN calculator model holds all of the information on the calculator and
+    the associated methods for the data. 
+
+    The SRPN_Model class is the only one that can edit the information that is
+    held in the stack
+    """
+    MAX_UP = 2147483647     # saturation fix
+    MAX_DN = -2147483648    # saturation fix
+    stack = []              # where all the numbers are stored 
+    env_comenting_flag = False
     result_list = []
-    
     random_stack = list()
     random_stack_it = 0
 
@@ -147,16 +148,41 @@ class SRPN_Model:
         return string
 
     def delete_comms(self, string):
-        comms_rgx = r'(#[^#]*#)|(#[^#]*$)'   # comments must be deleted 1 by one 
-        while re.search(comms_rgx, string):
-            i_com = re.finditer(comms_rgx, string)
-            inst = next(i_com)
-            start = inst.start()
-            end = inst.end()
-            string = string[:start] + string[end:]
+        """
+        comms parser 
+        """
+        comms_rgx_encaps = r'(#[^#]*#(?=.))'   # comments must be deleted 1 by one 
+        comms_rgx_hanging = r'(#[^#]*(?=$))'    
+        comms_rgx_closing = r'([^#]*#)'    
+        if self.env_comenting_flag == False:
+            """
+            if commenting flag is down
+            delete encapsulated comments 
+            """
+            while re.search(comms_rgx_encaps, string):
+                i_com = re.finditer(comms_rgx_encaps, string)
+                inst = next(i_com)
+                start = inst.start()
+                end = inst.end()
+                string = string[:start] + string[end:]
+            if re.search(comms_rgx_hanging, string):
+                self.env_comenting_flag = True
+                string = re.sub(comms_rgx_hanging,r'',string)
+        else:
+            """
+            if commenting flag is up
+            delete everything until the coments are closed
+            and then re-parse for encapsulated 
+            """
+            if re.search(comms_rgx_closing, string):
+                self.env_comenting_flag = False
+                string = re.sub(comms_rgx_closing, r'',string)
+                self.delete_comms(string)
+            else:
+                string = ""
+
         return string
             
-
     def replace_r(self, string):
         """ 
         replace r with randon number from queue
@@ -208,7 +234,8 @@ class SRPN_Model:
         return str(noctal*sign)
 
     def octal_transform(self,string):
-        """transforms all the octal numbers in the string into integer numbers"
+        """
+        transforms all the octal numbers in the string into integer numbers"
         """
         octa_rx = r'(((?<=[+/%*^])|(?<=\s)|(?<=^))[-]?0+[1-9][0-9]*)'
         while re.search(octa_rx,string):
@@ -222,15 +249,18 @@ class SRPN_Model:
 
 
     def process(self, rw_data):
-        """ Split the string into substrings based on spaces 
+        """ 
+        Split the string into substrings based on spaces 
         """
         rw_data = str(rw_data) # be sure it is a string
         rw_data = self.delete_comms(rw_data)
-        rw_data = self.process_rp_r(rw_data)
-        rw_data = self.replace_r(rw_data)
-        rw_data = self.process_sp_math_ops(rw_data)
-        rw_data = self.octal_transform(rw_data)
-        data =  rw_data.split() # split it 
+        if self.env_comenting_flag == False :
+            rw_data = self.process_rp_r(rw_data)
+            rw_data = self.replace_r(rw_data)
+            rw_data = self.process_sp_math_ops(rw_data)
+            rw_data = self.octal_transform(rw_data)
+            rw_data =  rw_data.split() # split it 
+        data = rw_data
         return data
 
 
@@ -445,9 +475,13 @@ class SRPN_Model:
                         self.prepare_response(self.evaluate(element[1:]))
 
                 else:
-                    for letter in element:
-                        self.prepare_response(\
-                                Result(RT.ER, Error(ERROR.UNRECOGN, letter)))
+                    if element == "":
+                        self.prepare_response(Result(RT.DO_NOTHING))
+
+                    else:
+                        for letter in element:
+                            self.prepare_response(\
+                                    Result(RT.ER, Error(ERROR.UNRECOGN, letter)))
 
         except Exception as e:
             print(e)
@@ -458,6 +492,7 @@ class SRPN_Model:
         sends it to be processed 
         reads through each element of the processed_data
         creates the list of results
+        returns the list of results for the controller to do whatever it needs 
         """
         self.init_result_list()
         processed_data = self.process(rw_data)
@@ -467,6 +502,7 @@ class SRPN_Model:
         else: 
             element = processed_data
             self.create_list(element)
+
         return self.result_list
 
         

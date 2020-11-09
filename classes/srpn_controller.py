@@ -57,3 +57,6 @@ class SRPN_Controller:
             elif result.code == RT.OP:  # opperation
                 dummy = " do nothing"
 
+            elif result.code == RT.DO_NOTHING:  # opperation
+                dummy = " do nothing"
+
