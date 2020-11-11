@@ -37,8 +37,8 @@ There are quite a few tests developed for the calculator.
 make test
 ```
 
-<<<<<<< HEAD
-LINK
+LINK to the original calculator
 https://repl.it/@bathuniversity/sprn-to-emulate#main.sh
-=======
->>>>>>> source-hut-package
+
+# Working on
+I am currently intending to create a webApp out of this.
