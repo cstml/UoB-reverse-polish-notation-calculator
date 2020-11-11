@@ -1,12 +1,17 @@
+#!/usr/bin/env python3
+
+# SPRN Calculator 
+# unit test module
+
 import unittest
 
 try:
-    from classes.error import Error
-    from classes.error import Error_Type as ERROR
-    from classes.result import Result as R
-    from classes.result import Result_Type as RT
-    from classes.srpn_model import SRPN_Model
-    from classes.srpn_view import SRPN_View
+    from srpn.error import Error
+    from srpn.error import Error_Type as ERROR
+    from srpn.result import Result as R
+    from srpn.result import Result_Type as RT
+    from srpn.srpn_model import SRPN_Model
+    from srpn.srpn_view import SRPN_View
     
 except Exception as e:
     print(e)

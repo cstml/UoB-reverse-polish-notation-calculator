@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 type: Uni Project 
 for: Principles of programming
 language: Python3 
@@ -13,6 +14,15 @@ can find in bin)
 
 
 ## How to:
+=======
+date : 09.11.2020
+
+---
+# Reverse Polish Notation Calcultor
+
+- for: Principles of Programming
+- University of Bath
+>>>>>>> source-hut-package
 
 ## Run
 ```Bash
@@ -21,10 +31,14 @@ make
 
 ## Test
 There are quite a few tests developed for the calculator.
-- to run them run:
+
+- to run unit tests:
 ```Bash
 make test
 ```
 
+<<<<<<< HEAD
 LINK
 https://repl.it/@bathuniversity/sprn-to-emulate#main.sh
+=======
+>>>>>>> source-hut-package
