@@ -1,7 +1,9 @@
-type: Uni Project 
+---
+type: University Project 
 for: Principles of programming
+degree: MSc Computer Science
 language: Python3 
-
+year: 2020
 ---
 
 # Reverse Polish Notation Saturated Calculator
@@ -13,8 +15,6 @@ can find in bin)
 
 
 ## How to:
-=======
-date : 09.11.2020
 
 ---
 # Reverse Polish Notation Calcultor
