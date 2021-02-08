@@ -1,44 +1,44 @@
-<<<<<<< HEAD
-type: Uni Project 
+---
+type: University Project 
 for: Principles of programming
+degree: MSc Computer Science
 language: Python3 
-
+year: 2020
 ---
 
 # Reverse Polish Notation Saturated Calculator
 
 ## About 
-This was my firs major project for my MSc in Computer Science at University of
-Bath. The project was to recreate a *black box* calculator (Which binary you
-can find in bin)
-
-
-## How to:
-=======
-date : 09.11.2020
+This was my first major project for my MSc in Computer Science at University of
+Bath. The project was to recreate a *black box* calculator (the binary of which 
+can be found in the bin)
 
 ---
-# Reverse Polish Notation Calcultor
 
-- for: Principles of Programming
-- University of Bath
->>>>>>> source-hut-package
+## How to:
 
 ## Run
-```Bash
-make
+
+```bash
+make 
+```
+
+## Debug
+
+```bash
+make debug
 ```
 
 ## Test
-There are quite a few tests developed for the calculator.
 
+There are quite a few tests developed for the calculator.
 - to run unit tests:
-```Bash
+
+```bash
 make test
 ```
 
+---
+
 LINK to the original calculator
 https://repl.it/@bathuniversity/sprn-to-emulate#main.sh
-
-# Working on
-I am currently intending to create a webApp out of this.
