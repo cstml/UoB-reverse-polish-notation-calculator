@@ -48,4 +48,4 @@ https://repl.it/@bathuniversity/sprn-to-emulate#main.sh
 # Further License Information
 
 I do not offer permission or license on this code to be used for other people's 
-submissions for similar assessments. Please, don't ust it for your assignment. 
+submissions for similar assessments. Please, don't use it for your assignment. 
