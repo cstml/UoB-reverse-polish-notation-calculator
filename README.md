@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 type: Uni Project 
 for: Principles of programming
 language: Python3 
@@ -22,7 +21,6 @@ date : 09.11.2020
 
 - for: Principles of Programming
 - University of Bath
->>>>>>> source-hut-package
 
 ## Run
 ```Bash
@@ -39,6 +37,3 @@ make test
 
 LINK to the original calculator
 https://repl.it/@bathuniversity/sprn-to-emulate#main.sh
-
-# Working on
-I am currently intending to create a webApp out of this.
